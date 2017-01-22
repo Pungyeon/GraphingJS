@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> GraphingJS </title>
+    <script src="PieChart.js"></script>
+</head>
+<body style="text-align: center; width: 1250px; margin: 0 auto">
+<div style="margin: 40px">
+    <h3> This is just a normal title </h3>
+    <p>This is just som text</p>
+</div>
+<div>
+    <canvas id="graph" height="300" width="400" style="border: 1px solid black">  </canvas>
+</div>
+</body>
+
+<script>
+
+    var data = [123, 23, 42, 42 ,82, 94, 85, 120, 85, 43];
+    var graph = new PieChart('graph', data);
+
+    graph.draw();
+
+
+</script>
+</html>
