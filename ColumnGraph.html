@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> GraphingJS </title>
+    <script src="ColumnGraph.js"></script>
+</head>
+<body style="text-align: center; width: 1250px; margin: 0 auto">
+    <div style="margin: 40px">
+        <h3> This is just a title </h3>
+        <p>This is just som text</p>
+    </div>
+    <div>
+        <canvas id="graph" height="200" width="400" >  </canvas>
+        <canvas id="graph2" height="200" width="400"> </canvas>
+        <canvas id="graph3" height="200" width="400"> </canvas>
+    </div>
+</body>
+
+<script>
+
+    var data = [234, 1223, 92];
+    var graph = new ColumnGraph('graph', data);
+    var graph2 = new ColumnGraph('graph2', [231232, 123123, 9000]);
+    var graph3 = new ColumnGraph('graph3', [1231224, 1231232, 8908]);
+
+    graph2.options.title = "Outbound Distribution";
+
+    graph.draw();
+    graph2.draw();
+    graph3.draw();
+
+
+</script>
+</html>
