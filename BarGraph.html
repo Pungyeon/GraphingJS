@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> GraphingJS </title>
+    <script src="BarGraph.js"></script>
+</head>
+<body style="text-align: center; width: 1250px; margin: 0 auto">
+    <div style="margin: 40px">
+        <h3> This is just a title </h3>
+        <p>This is just som text</p>
+    </div>
+    <div>
+        <canvas id="graph" height="300" width="400" style="border: 1px solid black" >  </canvas>
+    </div>
+</body>
+
+<script>
+    var data = [234, 123, 92, 44, 12];
+    var graph = new BarGraph('graph', data);
+    graph.draw();
+</script>
+</html>
