@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Canvas </title>
+</head>
+<body>
+    <div style="font-family: Arial">
+        <span> Score: </span><span id="score"> 0 </span><br>
+    </div>
+    <canvas id="graph" width="400" height="200" style="border: 1px solid black"> </canvas>
+    <br><button onclick="restart()"> restart </button>
+</body>
+
+<script>
+
+    var Snake = function(canvas) {
+
+        this.c = document.getElementById(canvas);
+        this.ctx = this.c.getContext('2d');
+
+        this.guyDimension = 10;
+
+
+        this.keyDown = function(e) {
+            switch(e.keyCode) {
+                case 38: // UP
+                    g.up();
+                    break;
+                case 39: // RIGHT
+                    g.right();
+                    break;
+                case 40: // DOWN
+                    g.down();
+                    break;
+                case 37: // LEFT
+                    g.left();
+                    break;
+                case 13: // ENTER
+                    g.stop();
+                    break;
+                case 82: // 'r' -> RESTART
+                    restart();
+                    break;
+                default:
+                    console.log(e.keyCode);
+                    break;
+            }
+        };
+
+        this.spawnfood = function() {
+            var x = Math.random() * this.c.width;
+            var y = Math.random() * this.c.height;
+            var ax = x - (x % this.guyDimension);
+            var ay = y - (y % this.guyDimension);
+            this.food = {x:ax, y:ay};
+        };
+
+        this.init = function() {
+            this.ctx.clearRect(0, 0, this.c.width, this.c.height);
+
+            this.tail = [{x: -10, y:10},{x: 0, y:10}];
+            this.food = {};
+            this.gameover = false;
+
+            this.x = this.guyDimension;
+            this.y = this.guyDimension;
+            this.speedX = this.guyDimension;
+            this.speedY = 0;
+
+            this.ctx.beginPath();
+            this.tail.push({x:this.x, y:this.y});
+            for (var i = 0; i < this.tail.length; i++) {
+                this.ctx.fillRect(this.tail[i].x, this.tail[i].y, this.guyDimension, this.guyDimension);
+            }
+            this.ctx.closePath();
+            this.spawnfood();
+            this.drawFood();
+            window.addEventListener("keydown", this.keyDown, true);
+        };
+
+        this.up = function() {
+            if (this.speedY !== this.guyDimension) {
+                this.speedY = -(this.guyDimension);
+                this.speedX = 0;
+            }
+        };
+
+        this.down = function() {
+            if (this.speedY !== -(this.guyDimension)) {
+                this.speedY = this.guyDimension;
+                this.speedX = 0;
+            }
+        };
+
+        this.right = function() {
+            if (this.speedX !== -(this.guyDimension)) {
+                this.speedX = this.guyDimension;
+                this.speedY = 0;
+            }
+        };
+
+        this.left = function() {
+            if (this.speedX !== this.guyDimension) {
+                this.speedX = -(this.guyDimension);
+                this.speedY = 0;
+            }
+        };
+
+        this.stop = function() {
+            this.speedX = 0;
+            this.speedY = 0;
+        };
+
+        this.drawFood = function() {
+            this.ctx.beginPath();
+            this.ctx.fillStyle = "#900";
+            this.ctx.fillRect(this.food.x, this.food.y, this.guyDimension, this.guyDimension);
+            this.ctx.closePath();
+        };
+
+        this.move = function() {
+            this.ctx.clearRect(0, 0, this.c.width, this.c.height);
+            this.drawFood();
+
+            this.ctx.beginPath();
+
+            var l = this.tail.length - 1;
+            var x = this.tail[l].x + this.speedX;
+            var y = this.tail[l].y + this.speedY;
+
+            this.tail.push({x:x, y:y});
+
+            if (x === this.c.width|| y === this.c.height) this.gameover = true;
+            if (y === -(this.guyDimension) || x === -(this.guyDimension)) this.gameover = true;
+
+            for (var i = 0; i < l; i++) {
+                if (this.tail[i].x === x && this.tail[i].y === y) this.gameover = true;
+            }
+
+            if (this.gameover === false) {
+
+                if (this.food.x !== x || this.food.y !== y) this.tail.shift();
+                else {
+                    var scoreDiv = document.getElementById('score');
+                    var score = parseInt(scoreDiv.innerText);
+                    scoreDiv.innerText = score + 10;
+                    this.spawnfood();
+                    this.drawFood();
+                }
+
+                this.ctx.fillStyle = "#000";
+
+                for (var i = 0; i < this.tail.length; i++) {
+                    this.ctx.fillRect(this.tail[i].x, this.tail[i].y, this.guyDimension, this.guyDimension);
+                }
+            } else {
+                // this.stop();
+                clearInterval(this.updating);
+                this.ctx.font = "20px Arial";
+                this.ctx.fillText("Game Over", 200 - 50, 100);
+            }
+
+            this.ctx.closePath();
+        };
+
+        this.update = function() {
+            var self = this;
+            this.updating = setInterval(function() { self.move() }, 60);
+        }
+
+    };
+    
+    var g = new Snake('graph');
+    g.init();
+    g.update();
+
+    function restart() {
+        g.init();
+        g.update();
+    }
+
+
+
+
+</script>
+</html>

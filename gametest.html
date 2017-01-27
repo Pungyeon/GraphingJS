@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> GAME TIME !!! </title>
+</head>
+<body>
+    <canvas id="graph" height="200" width="400" style="border: 1px solid black"></canvas>
+</body>
+
+<script>
+
+    var Cube = function(canvas) {
+
+        this.c = document.getElementById(canvas);
+        this.ctx = this.c.getContext('2d');
+
+        this.x = 50;
+        this.y = 10;
+        this.velocity = 0;
+        this.gravity = 0.1;
+        this.lift = 0;
+
+        this.init = function() {
+            this.ctx.beginPath();
+            this.ctx.fillRect(this.x, 10, 10, 10);
+            this.ctx.closePath();
+        };
+
+        this.edgeCase = function(x, y) {
+
+            if (x !== 0) {
+                var r = x + this.x;
+                if (r < 0 || r >= this.c.width + 10) return true;
+            }
+
+            if (y !== 0) {
+                var r = y + this.y;
+                if (r < 0 || r >= this.c.height) return true;
+            }
+
+            return false;
+        };
+
+        this.set = function(x, y) {
+            if (this.edgeCase(x, y) !== true) {
+                this.x += x;
+                this.y += y;
+                this.move(x, y);
+            } else {
+                // do nothing
+            }
+        };
+
+        this.get = function() {
+            return [this.x, this.y];
+        };
+
+        this.move = function() {
+            this.ctx.clearRect(0, 0, this.c.width, this.c.height);
+            this.ctx.beginPath();
+            this.ctx.fillRect(this.x, this.y, 10, 10);
+            this.ctx.closePath();
+        };
+
+        this.update = function() {
+            this.velocity += this.gravity - (this.lift * 0.9);
+            this.lift = 0;
+            this.set(0, this.velocity);
+        }
+    };
+
+    var cube = new Cube('graph', 10, 10);
+    cube.init();
+
+    function keyDown(e) {
+        switch(e.keyCode) {
+            case 38: // UP
+                cube.lift += 5;
+                cube.get();
+                break;
+            case 39: // RIGHT
+                cube.set(10, 0);
+                break;
+            case 40: // DOWN
+                cube.set(0, 10);
+                break;
+            case 37:
+                cube.set(-10, 0);
+                break;
+            default:
+                console.log(e.keyCode);
+                break;
+        }
+    }
+
+    window.addEventListener("keydown", keyDown, true);
+
+    setInterval(function() { cube.update(); }, 10);
+
+    console.log("done");
+
+</script>
+</html>
