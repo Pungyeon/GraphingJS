@@ -1,10 +1,34 @@
 <html>
 <body>
-  <canvas width="400" height="200" style="border: 1px solid black"> </canvas>
+  <canvas width="400" height="200" id='graph' style="border: 1px solid black"> </canvas>
 </body>
 
 <script>
-    
+  var Bird = function() {
+
+    this.c = document.getElementById('graph');
+    this.ctx = this.c.getContext('2d');
+
+    this.drawCircle = function (ctx, c) {
+      ctx.beginPath();
+      ctx.arc(Math.random() * c.width, Math.random() * c.height, 10, 0, Math.PI*2.5, true);
+      ctx.fill();
+      ctx.stroke();
+      ctx.closePath();
+    }
+
+    this.update = function() {
+      var derp = this.drawCircle;
+      var d = this.c;
+      var dtx = this.ctx;
+      setInterval(function() { derp(dtx, d) }, 1);
+    }
+
+  };
+
+  var b = new Bird();
+  b.update();
+
 </script>
 
 </html>

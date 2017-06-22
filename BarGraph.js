@@ -11,7 +11,7 @@ var BarGraph = function(canvas, data) {
             yMargin: 1.20
         },
         labels: {
-            labelsX: ["Low", "Medium", "High", "Something", "Else"],
+            labelsX: ["Low", "Microsoft Office 365 and OneDrive Online", "High", "Microsoft Exchange Online", "Else"],
             labelsY: false
         },
         margin: 10,
@@ -58,7 +58,8 @@ var BarGraph = function(canvas, data) {
       var marginTop = (height - fontsize) / 2
 
       this.ctx.beginPath();
-      this.ctx.fillText(this.options.labels.labelsX[index], x + 10, y + marginTop)
+      // this.ctx.fillText(this.options.labels.labelsX[index], x + 10, y + marginTop)
+      this.ctx.fillText(this.options.labels.labelsX[index], x + 10, y + (height / 2))
       this.ctx.closePath();
 
 
